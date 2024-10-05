@@ -1,0 +1,14 @@
+[package]
+name = "portfolio-api"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-web = { version = "4", features = ["rustls-0_23"] }
+serde = { version = "1.0.210", features = ["derive"] }
+serde_json = "1.0"
+redis = { version = "0.27.2", features = ["cluster-async", "async-std-comp"] }
+figment = { version = "0.10", features = ["toml"] }
+awc = { version = "3.5.1", features = ["rustls"] }
+rustls = "0.23"
+rustls-pemfile = "2"
