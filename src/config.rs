@@ -16,6 +16,13 @@ pub struct WeatherConfig {
 }
 
 #[derive(Deserialize)]
+pub struct SpotifyConfig {
+    pub client_id: String,
+    pub secret: String,
+    pub redirect_uri: String
+}
+
+#[derive(Deserialize)]
 pub struct RedisConfig {
     pub host: String
 }
@@ -24,6 +31,7 @@ pub struct RedisConfig {
 pub struct Config {
     pub base_url: BaseUrlConfig,
     pub weather: WeatherConfig,
+    pub spotify: SpotifyConfig,
     pub redis: RedisConfig
 }
 

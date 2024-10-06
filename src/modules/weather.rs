@@ -1,9 +1,9 @@
-use actix_web::{web, HttpResponse, Responder};
+use actix_web::{web::{self, Json}, HttpResponse, Responder};
 use awc::Client;
-use redis::AsyncCommands;
+use redis::{AsyncCommands, RedisError};
 use serde::{Deserialize, Serialize};
 
-use crate::config;
+use crate::{config, connectors::redis_connector::get_connection};
 
 pub fn weather_config(config: &mut web::ServiceConfig) {
     config.service(
@@ -41,29 +41,34 @@ struct WeatherResponse {
     condition: String
 }
 
-async fn get_cached_weather(lang: String) -> String {
-    let client = redis::Client::open("redis://127.0.0.1/").unwrap();
-    let mut connection = client.get_multiplexed_async_connection().await.unwrap();
+async fn get_cached_localized_weather(lang: String) -> String {
+    let mut connection = get_connection().await;
+    let weather_result: Result<String, RedisError> = connection.get(format!("weather_{lang}")).await;
 
-    let weather: String = connection.get(format!("weather_{lang}")).await.unwrap();
-    if !weather.is_empty() {
-        return weather
-    } else {
-        return String::from("")
+    match weather_result {
+        Ok(weather) => {
+            return weather
+        },
+        Err(_error) => {
+            return String::new()
+        }
     }
+}
+
+async fn set_weather_cache(lang: String, value: String) {
+    let mut connection = get_connection().await;
+    let _: Result<String, RedisError> = connection.set_ex(format!("weather_{lang}"), value, 3600).await;
 }
 
 async fn get_weather(query: web::Query<Information>) -> impl Responder {
     let client = Client::default();
     let config = config();
 
-    let cached_weather: String = get_cached_weather(query.lang.clone()).await;
+    let cached_weather: String = get_cached_localized_weather(query.lang.clone()).await;
 
     if !cached_weather.is_empty() {
-        let sr = cached_weather.to_string();
-        println!("{}", format!("{}", sr));
-    } else {
-        println!("no")
+        let json_cached_weather: WeatherResponse = serde_json::from_str(&cached_weather).expect("Cannot get JSON from cached weather");
+        return HttpResponse::Ok().json(json_cached_weather)
     }
 
     let url = format!(
@@ -88,11 +93,15 @@ async fn get_weather(query: web::Query<Information>) -> impl Responder {
         Ok(valid_str) => {
             let response: WeatherApiResponse = serde_json::from_str(valid_str).unwrap();
 
-            return HttpResponse::Ok().json(WeatherResponse {
+            let json_response = Json(WeatherResponse {
                 temp_c: response.current.temp_c,
                 temp_f: response.current.temp_f,
                 condition: response.current.condition.text
             });
+
+            let stringified_response = serde_json::to_string(&json_response).unwrap();
+            set_weather_cache(query.lang.clone(), stringified_response).await;
+            return HttpResponse::Ok().json(json_response);
         },
         Err(error) => {
             return HttpResponse::InternalServerError().body(format!("Invalid UTF-8 sequence: {}", error))

@@ -1,16 +1,19 @@
-use std::{fs::File, io::BufReader};
+/* use std::{fs::File, io::BufReader}; */
 
-use actix_web::{web, App, HttpServer};
-use modules::weather::weather_config;
+use actix_web::{middleware, web, App, HttpServer};
+use connectors::redis_connector::connect;
+use modules::{projects::projects_config, spotify::spotify_config, weather::weather_config};
 use config::Config;
 
 pub mod config;
 pub mod modules;
+pub mod connectors;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    // http/2 & https
-    rustls::crypto::aws_lc_rs::default_provider()
+    connect().await;
+
+    /* rustls::crypto::aws_lc_rs::default_provider()
         .install_default()
         .unwrap();
 
@@ -28,17 +31,20 @@ async fn main() -> std::io::Result<()> {
     let tls_config = rustls::ServerConfig::builder()
         .with_no_client_auth()
         .with_single_cert(tls_cert, rustls::pki_types::PrivateKeyDer::Pkcs8(tls_key))
-        .unwrap();
+        .unwrap(); */
 
     HttpServer::new(|| {
         App::new()
             .service(
                 web::scope("/api/v1")
+                    .wrap(middleware::Compress::default())
                     .configure(weather_config)
+                    .configure(projects_config)
+                    .configure(spotify_config)
             )
 
     })
-    .bind_rustls_0_23(("127.0.0.1", 3000), tls_config)?
+    .bind(("127.0.0.1", 3000))?
     .run()
     .await
 }

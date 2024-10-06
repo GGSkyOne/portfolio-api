@@ -1,5 +1,6 @@
 /target
+.DS_Store
 config.toml
 cert.pem
 key.pem
-
+spotify_token_storage.json

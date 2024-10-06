@@ -1,0 +1,759 @@
+[
+    {
+        "id": 1,
+        "active": true,
+        "title": "Портфолио",
+        "website": "ggsky.one",
+        "version": "2",
+        "description": "Мой сайт-портфолио! Планирую обновлять его в дальнейшем, многостраничный сайт, исходный код закрыт.",
+        "type": "personal",
+        "kind": "frontend",
+        "image": {
+            "light": "/projects/portfolio/image/light.png",
+            "dark": "/projects/portfolio/image/dark.png"
+        },
+        "logo": {
+            "enabled": true,
+            "dark": "/favicon.png",
+            "light": "/favicon.png"
+        },
+        "supported": true,
+        "finished": true,
+        "updates": true,
+        "production": true,
+        "development": false,
+        "paused": false,
+        "deps": [
+            {
+                "name": "Nuxt",
+                "version": "3.13.2",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/nuxt/light.svg",
+                    "light": "/skills/nuxt/dark.svg"
+                }
+            },
+            {
+                "name": "Vue",
+                "version": "3.5.11",
+                "icon": {
+                    "type": "html",
+                    "entity": "&#xe903;",
+                    "dark": "",
+                    "light": ""
+                }
+            },
+            {
+                "name": "Tailwind",
+                "version": "3.4.13",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/tailwind/light.svg",
+                    "light": "/skills/tailwind/dark.svg"
+                }
+            }
+        ],
+        "link": "https://ggsky.one"
+    },
+    {
+        "id": 2,
+        "active": true,
+        "title": "API Портфолио",
+        "website": "ggsky.one/api/v1",
+        "version": "1",
+        "description": "API моего портфолио, проекты, погода, текущий проигрываемый трек в Spotify. В будущем планирую расширять функционал!",
+        "type": "personal",
+        "kind": "backend",
+        "logo": {
+            "enabled": true,
+            "dark": "/favicon.png",
+            "light": "/favicon.png"
+        },
+        "supported": true,
+        "finished": true,
+        "updates": true,
+        "production": true,
+        "development": false,
+        "paused": false,
+        "deps": [
+            {
+                "name": "Typescript",
+                "version": "latest",
+                "icon": {
+                    "type": "html",
+                    "entity": "&#xe904;",
+                    "dark": "",
+                    "light": ""
+                }
+            },
+            {
+                "name": "Elysia",
+                "version": "1.0.26",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/elysia/logo.svg",
+                    "light": "/skills/elysia/logo.svg"
+                }
+            },
+            {
+                "name": "Bun",
+                "version": "1.1.21",
+                "icon": {
+                    "type": "html",
+                    "entity": "&#xe907;",
+                    "dark": "",
+                    "light": ""
+                }
+            }
+        ],
+        "open_source": false,
+        "link": ""
+    },
+    {
+        "id": 3,
+        "active": true,
+        "title": "Sky SMP",
+        "website": "skysmp.me",
+        "version": "1",
+        "description": "Мой приватный SMP-сервер! Делаем фокус на сообществе и его качестве, недавно начался новый сезон 👀",
+        "type": "personal",
+        "kind": "frontend",
+        "logo": {
+            "enabled": true,
+            "dark": "/projects/astra/dark.svg",
+            "light": "/projects/astra/light.svg"
+        },
+        "supported": true,
+        "finished": true,
+        "updates": true,
+        "production": true,
+        "development": false,
+        "paused": false,
+        "deps": [
+            {
+                "name": "Nuxt",
+                "version": "3.13.2",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/nuxt/light.svg",
+                    "light": "/skills/nuxt/dark.svg"
+                }
+            },
+            {
+                "name": "Vue",
+                "version": "3.5.10",
+                "icon": {
+                    "type": "html",
+                    "entity": "&#xe903;",
+                    "dark": "",
+                    "light": ""
+                }
+            },
+            {
+                "name": "Tailwind",
+                "version": "3.4.13",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/tailwind/light.svg",
+                    "light": "/skills/tailwind/dark.svg"
+                }
+            }
+        ],
+        "open_source": false,
+        "modules": ["@nuxt/color-mode", "@nuxt/fonts"],
+        "link": "https://skysmp.me"
+    },
+    {
+        "id": 4,
+        "active": true,
+        "title": "Sky API",
+        "website": "skysmp.me/api/v1",
+        "version": "1",
+        "description": "API для моего приватного SMP-сервера. Взаимодействие с RCON, личный кабинет, автоматическая выдача доступов и других классных штук.",
+        "type": "personal",
+        "kind": "backend",
+        "logo": {
+            "enabled": true,
+            "dark": "/projects/astra/dark.svg",
+            "light": "/projects/astra/light.svg"
+        },
+        "supported": true,
+        "finished": true,
+        "updates": true,
+        "production": true,
+        "development": false,
+        "paused": false,
+        "deps": [
+            {
+                "name": "Typescript",
+                "version": "latest",
+                "icon": {
+                    "type": "html",
+                    "entity": "&#xe904;",
+                    "dark": "",
+                    "light": ""
+                }
+            },
+            {
+                "name": "Fastify",
+                "version": "4.28.0",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/fastify/light.svg",
+                    "light": "/skills/fastify/dark.svg"
+                }
+            },
+            {
+                "name": "Bun",
+                "version": "1.1.29",
+                "icon": {
+                    "type": "html",
+                    "entity": "&#xe907;",
+                    "dark": "",
+                    "light": ""
+                }
+            }
+        ],
+        "open_source": false,
+        "modules": ["@nuxt/color-mode", "@nuxt/fonts"],
+        "link": ""
+    },
+    {
+        "id": 5,
+        "active": false,
+        "title": "Портфолио",
+        "website": "ggsky.one",
+        "version": "1",
+        "description": "Мой старый сайт-портфолио! Больше не поддерживаю в связи с созданием нового",
+        "type": "personal",
+        "kind": "frontend",
+        "image": {
+            "light": "/projects/portfolio-old/image/light.png",
+            "dark": "/projects/portfolio-old/image/dark.png"
+        },
+        "logo": {
+            "enabled": true,
+            "dark": "/favicon.png",
+            "light": "/favicon.png"
+        },
+        "supported": false,
+        "finished": true,
+        "updates": false,
+        "production": true,
+        "development": false,
+        "paused": false,
+        "deps": [
+            {
+                "name": "Nuxt",
+                "version": "3.11.2",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/nuxt/light.svg",
+                    "light": "/skills/nuxt/dark.svg"
+                }
+            },
+            {
+                "name": "Vue",
+                "version": "3.4.29",
+                "icon": {
+                    "type": "html",
+                    "entity": "&#xe903;",
+                    "dark": "",
+                    "light": ""
+                }
+            },
+            {
+                "name": "Tailwind",
+                "version": "3.4.4",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/tailwind/light.svg",
+                    "light": "/skills/tailwind/dark.svg"
+                }
+            }
+        ],
+        "open_source": false,
+        "modules": ["@nuxt/color-mode", "@nuxt/fonts"],
+        "link": "https://ggsky.one"
+    },
+    {
+        "id": 6,
+        "active": true,
+        "title": "play2go",
+        "website": "play2go.cloud",
+        "version": "1",
+        "description": "Надёжный хостинг с отличными ценами и лучшей защитой уровней L3-L7. Многостраничный сайт с личным кабинетом и админ-панелью.",
+        "type": "external",
+        "kind": "frontend",
+        "image": {
+            "light": "/projects/play2go/image/light.png",
+            "dark": "/projects/play2go/image/dark.png"
+        },
+        "logo": {
+            "enabled": true,
+            "dark": "/projects/play2go/dark.svg",
+            "light": "/projects/play2go/light.svg"
+        },
+        "supported": true,
+        "finished": true,
+        "updates": true,
+        "production": true,
+        "development": false,
+        "paused": false,
+        "deps": [
+            {
+                "name": "Nuxt",
+                "version": "3.13.2",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/nuxt/light.svg",
+                    "light": "/skills/nuxt/dark.svg"
+                }
+            },
+            {
+                "name": "Vue",
+                "version": "3.5.10",
+                "icon": {
+                    "type": "html",
+                    "entity": "&#xe903;",
+                    "dark": "",
+                    "light": ""
+                }
+            },
+            {
+                "name": "Tailwind",
+                "version": "3.4.13",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/tailwind/light.svg",
+                    "light": "/skills/tailwind/dark.svg"
+                }
+            }
+        ],
+        "open_source": false,
+        "modules": ["@nuxt/color-mode", "@nuxt/fonts"],
+        "link": "https://play2go.cloud"
+    },
+    {
+        "id": 7,
+        "active": true,
+        "title": "Aurorix",
+        "website": "aurorix.net",
+        "version": "2",
+        "description": "Надёжный и стабильный хостинг игровых серверов. Многостраничный сайт с личным кабинетом и админ-панелью.",
+        "type": "external",
+        "kind": "frontend",
+        "image": {
+            "light": "",
+            "dark": "/projects/aurorix/image/dark.png"
+        },
+        "logo": {
+            "enabled": true,
+            "dark": "/projects/aurorix/dark.svg",
+            "light": "/projects/aurorix/light.svg"
+        },
+        "supported": true,
+        "finished": true,
+        "updates": true,
+        "production": true,
+        "development": false,
+        "paused": false,
+        "deps": [
+            {
+                "name": "Nuxt",
+                "version": "3.12.4",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/nuxt/light.svg",
+                    "light": "/skills/nuxt/dark.svg"
+                }
+            },
+            {
+                "name": "Vue",
+                "version": "3.4.37",
+                "icon": {
+                    "type": "html",
+                    "entity": "&#xe903;",
+                    "dark": "",
+                    "light": ""
+                }
+            },
+            {
+                "name": "Tailwind",
+                "version": "3.4.4",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/tailwind/light.svg",
+                    "light": "/skills/tailwind/dark.svg"
+                }
+            }
+        ],
+        "open_source": false,
+        "link": "https://aurorix.net"
+    },
+    {
+        "id": 8,
+        "active": true,
+        "title": "mitelis",
+        "website": "mitelis.net",
+        "version": "1",
+        "description": "Cloud-платформа построенная на предоставлении качественной DDoS-Защиты от любых атак. Одностраничный сайт.",
+        "type": "external",
+        "kind": "frontend",
+        "image": {
+            "light": "/projects/mitelis/image/light.png",
+            "dark": "/projects/mitelis/image/dark.png"
+        },
+        "logo": {
+            "enabled": true,
+            "dark": "/projects/mitelis/logo.svg",
+            "light": "/projects/mitelis/logo.svg"
+        },
+        "supported": true,
+        "finished": true,
+        "updates": false,
+        "production": true,
+        "development": false,
+        "paused": false,
+        "deps": [
+            {
+                "name": "Nuxt",
+                "version": "3.12.2",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/nuxt/light.svg",
+                    "light": "/skills/nuxt/dark.svg"
+                }
+            },
+            {
+                "name": "Vue",
+                "version": "3.4.30",
+                "icon": {
+                    "type": "html",
+                    "entity": "&#xe903;",
+                    "dark": "",
+                    "light": ""
+                }
+            },
+            {
+                "name": "Tailwind",
+                "version": "3.4.4",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/tailwind/light.svg",
+                    "light": "/skills/tailwind/dark.svg"
+                }
+            }
+        ],
+        "open_source": false,
+        "modules": ["@nuxt/color-mode", "@nuxt/fonts"],
+        "link": "https://mitelis.net"
+    },
+    {
+        "id": 9,
+        "active": true,
+        "title": "madhost",
+        "website": "madhost.pw",
+        "version": "1",
+        "description": "Надежный и стабильный провайдер выделенных и виртуальных серверов. Многостраничный сайт.",
+        "type": "external",
+        "kind": "frontend",
+        "image": {
+            "light": "/projects/madhost/image/light.png",
+            "dark": "/projects/madhost/image/dark.png"
+        },
+        "logo": {
+            "enabled": true,
+            "dark": "/projects/madhost/logo.svg",
+            "light": "/projects/madhost/logo.svg"
+        },
+        "supported": true,
+        "finished": true,
+        "updates": false,
+        "production": true,
+        "development": false,
+        "paused": false,
+        "deps": [
+            {
+                "name": "Nuxt",
+                "version": "3.11.2",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/nuxt/light.svg",
+                    "light": "/skills/nuxt/dark.svg"
+                }
+            },
+            {
+                "name": "Vue",
+                "version": "3.4.27",
+                "icon": {
+                    "type": "html",
+                    "entity": "&#xe903;",
+                    "dark": "",
+                    "light": ""
+                }
+            },
+            {
+                "name": "Tailwind",
+                "version": "3.4.4",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/tailwind/light.svg",
+                    "light": "/skills/tailwind/dark.svg"
+                }
+            }
+        ],
+        "open_source": false,
+        "modules": ["@nuxt/color-mode", "@nuxt/fonts"],
+        "link": "https://madhost.pw"
+    },
+    {
+        "id": 10,
+        "active": true,
+        "title": "Phylex",
+        "website": "phylexnodes.me",
+        "version": "1",
+        "description": "Инновационный хостинг Minecraft серверов. Многостраничный сайт.",
+        "type": "external",
+        "kind": "frontend",
+        "image": {
+            "light": "/projects/phylex/image/light.png",
+            "dark": "/projects/phylex/image/dark.png"
+        },
+        "logo": {
+            "enabled": true,
+            "dark": "/projects/phylex/logo.png",
+            "light": "/projects/phylex/logo.png"
+        },
+        "supported": true,
+        "finished": true,
+        "updates": false,
+        "production": true,
+        "development": false,
+        "paused": false,
+        "deps": [
+            {
+                "name": "Nuxt",
+                "version": "3.11.2",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/nuxt/light.svg",
+                    "light": "/skills/nuxt/dark.svg"
+                }
+            },
+            {
+                "name": "Vue",
+                "version": "3.4.21",
+                "icon": {
+                    "type": "html",
+                    "entity": "&#xe903;",
+                    "dark": "",
+                    "light": ""
+                }
+            },
+            {
+                "name": "Tailwind",
+                "version": "3.4.4",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/tailwind/light.svg",
+                    "light": "/skills/tailwind/dark.svg"
+                }
+            }
+        ],
+        "open_source": false,
+        "link": "https://phylexnodes.me"
+    },
+    {
+        "id": 11,
+        "active": true,
+        "title": "alania",
+        "website": "alania.cloud",
+        "version": "1",
+        "description": "Хостинг выделенных и виртуальных серверов, многостраничный сайт + биллинг.",
+        "type": "external",
+        "kind": "frontend",
+        "image": {
+            "light": "/projects/alania/image/light.png",
+            "dark": "/projects/alania/image/dark.png"
+        },
+        "logo": {
+            "enabled": true,
+            "dark": "/projects/alania/logo.svg",
+            "light": "/projects/alania/logo.svg"
+        },
+        "supported": true,
+        "finished": true,
+        "updates": true,
+        "production": false,
+        "development": false,
+        "paused": false,
+        "deps": [
+            {
+                "name": "Nuxt",
+                "version": "3.12.2",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/nuxt/light.svg",
+                    "light": "/skills/nuxt/dark.svg"
+                }
+            },
+            {
+                "name": "Vue",
+                "version": "3.4.30",
+                "icon": {
+                    "type": "html",
+                    "entity": "&#xe903;",
+                    "dark": "",
+                    "light": ""
+                }
+            },
+            {
+                "name": "Tailwind",
+                "version": "3.4.4",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/tailwind/light.svg",
+                    "light": "/skills/tailwind/dark.svg"
+                }
+            }
+        ],
+        "open_source": false
+    },
+    {
+        "id": 11,
+        "active": true,
+        "title": "WaF",
+        "website": "???",
+        "version": "1",
+        "description": "Хостинг выделенных и виртуальных серверов, многостраничный сайт.",
+        "type": "external",
+        "kind": "frontend",
+        "image": {
+            "light": "/projects/waf/image/light.png",
+            "dark": "/projects/waf/image/dark.png"
+        },
+        "logo": {
+            "enabled": true,
+            "dark": "/projects/waf/dark.svg",
+            "light": "/projects/waf/light.svg"
+        },
+        "supported": true,
+        "finished": true,
+        "updates": true,
+        "production": false,
+        "development": false,
+        "paused": false,
+        "deps": [
+            {
+                "name": "Nuxt",
+                "version": "3.12.2",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/nuxt/light.svg",
+                    "light": "/skills/nuxt/dark.svg"
+                }
+            },
+            {
+                "name": "Vue",
+                "version": "3.4.30",
+                "icon": {
+                    "type": "html",
+                    "entity": "&#xe903;",
+                    "dark": "",
+                    "light": ""
+                }
+            },
+            {
+                "name": "Tailwind",
+                "version": "3.4.4",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/tailwind/light.svg",
+                    "light": "/skills/tailwind/dark.svg"
+                }
+            }
+        ],
+        "open_source": false
+    },
+    {
+        "id": 12,
+        "active": true,
+        "title": "Aurorix",
+        "website": "aurorix.net",
+        "version": "1",
+        "description": "Старый сайт Aurorix, многостраничный сайт с биллингом и админ-панелью.",
+        "type": "external",
+        "kind": "frontend",
+        "image": {
+            "light": "",
+            "dark": "/projects/aurorix/image/dark.png"
+        },
+        "logo": {
+            "enabled": true,
+            "dark": "/projects/aurorix/dark.svg",
+            "light": "/projects/aurorix/light.svg"
+        },
+        "supported": false,
+        "finished": true,
+        "updates": false,
+        "production": true,
+        "development": false,
+        "paused": false,
+        "deps": [
+            {
+                "name": "Nuxt",
+                "version": "3.12.2",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/nuxt/light.svg",
+                    "light": "/skills/nuxt/dark.svg"
+                }
+            },
+            {
+                "name": "Vue",
+                "version": "3.4.30",
+                "icon": {
+                    "type": "html",
+                    "entity": "&#xe903;",
+                    "dark": "",
+                    "light": ""
+                }
+            },
+            {
+                "name": "Tailwind",
+                "version": "3.4.4",
+                "icon": {
+                    "type": "svg",
+                    "entity": "",
+                    "dark": "/skills/tailwind/light.svg",
+                    "light": "/skills/tailwind/dark.svg"
+                }
+            }
+        ],
+        "open_source": false
+    }
+]

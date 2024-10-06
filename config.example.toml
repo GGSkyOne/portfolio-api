@@ -1,7 +1,6 @@
 [base_url]
 weather_api = "https://api.weatherapi.com/v1"
 spotify_api = "https://api.spotify.com/v1"
-
 spotify_accounts = "https://accounts.spotify.com"
 spotify_accounts_api = "https://accounts.spotify.com/api"
 
@@ -12,7 +11,7 @@ city = ""
 [spotify]
 client_id = ""
 secret = ""
-redirect_uri = "http://localhost:3000/api/v1/spotify/callback"
+redirect_uri = "http://localhost:3000/api/spotify/callback"
 
 [redis]
-host = "127.0.0.1"
+host = "redis://127.0.0.1/"
