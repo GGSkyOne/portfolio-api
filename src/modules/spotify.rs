@@ -1,12 +1,11 @@
 use std::fs;
 
-use actix_web::{http::header::{self, ContentType}, web::{self, Json}, HttpResponse, Responder};
-use awc::Client;
+use actix_web::{web::{self, Json}, HttpResponse, Responder};
 use base64_light::base64_encode;
 use serde::{Deserialize, Serialize};
 use struson::writer::simple::{SimpleJsonWriter, ValueWriter};
 
-use crate::config;
+use crate::{config, get_reqwest_client};
 
 pub fn spotify_config(config: &mut web::ServiceConfig) {
     config.service(
@@ -136,7 +135,7 @@ struct ApiTrackImage {
 async fn get_track_data() -> Json<TrackData> {
     let storage: TokenStorage = get_token_storage();
     
-    let client = Client::default();
+    let client = get_reqwest_client();
     let config = config();
 
     let url = format!(
@@ -144,24 +143,23 @@ async fn get_track_data() -> Json<TrackData> {
         url = config.base_url.spotify_api.clone()
     );
 
-    let mut request = client.get(url)
-        .append_header((header::ACCEPT_ENCODING, "gzip, deflate, br"))
-        .append_header((header::AUTHORIZATION, format!("Bearer {}", storage.access_token.to_string())))
+    let response = client
+        .get(url)
+        .header(reqwest::header::ACCEPT_ENCODING, "gzip, deflate, br")
+        .header(reqwest::header::AUTHORIZATION, format!("Bearer {}", storage.access_token.to_string()))
         .send()
         .await
         .unwrap();
 
-    let body = request
-        .body()
+    let status_code = response.status();
+
+    let string_response = response
+        .text()
         .await
         .unwrap();
 
-    let status_code = request.status();
-
-    let utf = std::str::from_utf8(&body).unwrap();
-
     if status_code.as_u16() == 200 {
-        let response_object: Result<ApiTrackData, serde_json::Error> = serde_json::from_str(utf);
+        let response_object: Result<ApiTrackData, serde_json::Error> = serde_json::from_str(&string_response);
 
         match response_object {
             Ok(response) => {
@@ -200,7 +198,7 @@ async fn get_track_data() -> Json<TrackData> {
 
 async fn refresh_spotify_token() {
     let storage: TokenStorage = get_token_storage();
-    let client = Client::default();
+    let client = get_reqwest_client();
     let config = config();
 
     let url = format!(
@@ -215,52 +213,47 @@ async fn refresh_spotify_token() {
     );
     let encoded_credentials = base64_encode(&credentials);
 
-    let mut request = client.post(url)
-        .append_header(ContentType::form_url_encoded())
-        .append_header((header::AUTHORIZATION, format!("Basic {}", encoded_credentials)))
+    let response = client
+        .post(url)
+        .header(reqwest::header::ACCEPT_ENCODING, "gzip, deflate, br")
+        .header(reqwest::header::CONTENT_TYPE, "application/x-www-form-urlencoded")
+        .header(reqwest::header::AUTHORIZATION, format!("Basic {}", encoded_credentials))
+        .header(reqwest::header::CONTENT_LENGTH, 0)
         .send()
         .await
         .unwrap();
 
-    let body = request
-        .body()
+    let string_response = response
+        .text()
         .await
         .unwrap();
 
-    let utf = std::str::from_utf8(&body);
+    let response_object: Result<TokenResponse, serde_json::Error> = serde_json::from_str(&string_response);
 
-    match utf {
-        Ok(valid_str) => {
-            let response_object: Result<TokenResponse, serde_json::Error> = serde_json::from_str(valid_str);
+    match response_object {
+        Ok(response) => {
+            let _ = fs::remove_file("storage/spotify_token_storage.json");
+            let file = fs::File::create("storage/spotify_token_storage.json").expect("Cannot open spotify token storage file");
 
-            match response_object {
-                Ok(response) => {
-                    let _ = fs::remove_file("storage/spotify_token_storage.json");
-                    let file = fs::File::create("storage/spotify_token_storage.json").expect("Cannot open spotify token storage file");
+            let json_writer = SimpleJsonWriter::new(file);
 
-                    let json_writer = SimpleJsonWriter::new(file);
+            let final_refresh_token: String;
 
-                    let final_refresh_token: String;
-
-                    if response.refresh_token.is_none() {
-                        final_refresh_token = storage.refresh_token
-                    } else {
-                        final_refresh_token = response.refresh_token.unwrap()
-                    }
-
-                    json_writer.write_object(|object_writer| {
-                        object_writer.write_string_member("access_token", &response.access_token)?;
-                        object_writer.write_string_member("refresh_token", &final_refresh_token)?;
-                        Ok(())
-                    }).unwrap();
-                },
-                Err(_error) => {
-                    return
-                }
+            if response.refresh_token.is_none() {
+                final_refresh_token = storage.refresh_token
+            } else {
+                final_refresh_token = response.refresh_token.unwrap()
             }
+
+            json_writer.write_object(|object_writer| {
+                object_writer.write_string_member("access_token", &response.access_token)?;
+                object_writer.write_string_member("refresh_token", &final_refresh_token)?;
+                Ok(())
+            }).unwrap();
         },
-        Err(_error) => {
+        Err(error) => {
+            println!("{}", error);
             return
-        },
+        }
     }
 }

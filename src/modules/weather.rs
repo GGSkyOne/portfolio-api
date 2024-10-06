@@ -1,9 +1,8 @@
 use actix_web::{web::{self, Json}, HttpResponse, Responder};
-use awc::Client;
 use redis::{AsyncCommands, RedisError};
 use serde::{Deserialize, Serialize};
 
-use crate::{config, connectors::redis_connector::get_connection};
+use crate::{config, connectors::redis_connector::get_connection, get_reqwest_client};
 
 pub fn weather_config(config: &mut web::ServiceConfig) {
     config.service(
@@ -61,7 +60,7 @@ async fn set_weather_cache(lang: String, value: String) {
 }
 
 async fn get_weather(query: web::Query<Information>) -> impl Responder {
-    let client = Client::default();
+    let client = get_reqwest_client();
     let config = config();
 
     let cached_weather: String = get_cached_localized_weather(query.lang.clone()).await;
@@ -79,32 +78,26 @@ async fn get_weather(query: web::Query<Information>) -> impl Responder {
         lang = query.lang.as_str()
     );
 
-    let request = client.get(url)
+    let api_response = client
+        .get(url)
         .send()
-        .await
-        .unwrap()
-        .body()
         .await
         .unwrap();
 
-    let utf = std::str::from_utf8(&request);
+    let string_response = api_response
+        .text()
+        .await
+        .unwrap();
 
-    match utf {
-        Ok(valid_str) => {
-            let response: WeatherApiResponse = serde_json::from_str(valid_str).unwrap();
+    let response: WeatherApiResponse = serde_json::from_str(&string_response).unwrap();
 
-            let json_response = Json(WeatherResponse {
-                temp_c: response.current.temp_c,
-                temp_f: response.current.temp_f,
-                condition: response.current.condition.text
-            });
+    let json_response = Json(WeatherResponse {
+        temp_c: response.current.temp_c,
+        temp_f: response.current.temp_f,
+        condition: response.current.condition.text
+    });
 
-            let stringified_response = serde_json::to_string(&json_response).unwrap();
-            set_weather_cache(query.lang.clone(), stringified_response).await;
-            return HttpResponse::Ok().json(json_response);
-        },
-        Err(error) => {
-            return HttpResponse::InternalServerError().body(format!("Invalid UTF-8 sequence: {}", error))
-        },
-    }
+    let stringified_response = serde_json::to_string(&json_response).unwrap();
+    set_weather_cache(query.lang.clone(), stringified_response).await;
+    return HttpResponse::Ok().json(json_response);
 }

@@ -9,15 +9,14 @@ serde = { version = "1.0.210", features = ["derive"] }
 serde_json = "1.0"
 redis = { version = "0.27.2", features = ["async-std-comp"] }
 figment = { version = "0.10", features = ["toml"] }
-awc = { version = "3.5.1", features = [
-    "rustls",
-    "compress-gzip",
-    "compress-brotli",
-    "compress-zstd",
-] }
 rustls = "0.23"
-rustls-pemfile = "2"
 lazy_static = "1.5.0"
 actix-files = "0.6.6"
 base64_light = "0.1.5"
 struson = { version = "0.5.0", features = ["experimental"] }
+reqwest = { version = "0.12.8", features = [
+    "gzip",
+    "brotli",
+    "zstd",
+    "deflate",
+] }
