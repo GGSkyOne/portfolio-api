@@ -11,7 +11,7 @@ pub fn projects_config(config: &mut web::ServiceConfig) {
 }
 
 async fn get_projects() -> Result<fs::NamedFile, Error> {
-    let path: PathBuf = "public/projects.json".parse().unwrap();
+    let path: PathBuf = "static/projects.json".parse().unwrap();
     let file = fs::NamedFile::open(path).unwrap();
     Ok(file)
 }

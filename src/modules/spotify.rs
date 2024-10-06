@@ -28,7 +28,7 @@ struct TokenResponse {
 }
 
 fn get_token_storage() -> TokenStorage {
-    let file = fs::File::open("private/spotify_token_storage.json").expect("Cannot open spotify token storage file");
+    let file = fs::File::open("storage/spotify_token_storage.json").expect("Cannot open spotify token storage file");
     let token_storage: TokenStorage = serde_json::from_reader(file).expect("Spotify token storage file should be proper JSON");
     return token_storage
 }
@@ -235,8 +235,8 @@ async fn refresh_spotify_token() {
 
             match response_object {
                 Ok(response) => {
-                    let _ = fs::remove_file("private/spotify_token_storage.json");
-                    let file = fs::File::create("private/spotify_token_storage.json").expect("Cannot open spotify token storage file");
+                    let _ = fs::remove_file("storage/spotify_token_storage.json");
+                    let file = fs::File::create("storage/spotify_token_storage.json").expect("Cannot open spotify token storage file");
 
                     let json_writer = SimpleJsonWriter::new(file);
 
