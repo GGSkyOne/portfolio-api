@@ -2,7 +2,7 @@ use actix_web::{web::{self, Json}, HttpResponse, Responder};
 use redis::{AsyncCommands, RedisError};
 use serde::{Deserialize, Serialize};
 
-use crate::{config, connectors::redis_connector::get_connection, get_reqwest_client};
+use crate::{client::get_client, config::get_config, connectors::redis_connector::get_connection};
 
 pub fn weather_config(config: &mut web::ServiceConfig) {
     config.service(
@@ -60,8 +60,8 @@ async fn set_weather_cache(lang: String, value: String) {
 }
 
 async fn get_weather(query: web::Query<Information>) -> impl Responder {
-    let client = get_reqwest_client();
-    let config = config();
+    let client = get_client();
+    let config = get_config();
 
     let cached_weather: String = get_cached_localized_weather(query.lang.clone()).await;
 

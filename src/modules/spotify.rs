@@ -5,7 +5,7 @@ use base64_light::base64_encode;
 use serde::{Deserialize, Serialize};
 use struson::writer::simple::{SimpleJsonWriter, ValueWriter};
 
-use crate::{config, get_reqwest_client};
+use crate::{client::get_client, config::get_config};
 
 pub fn spotify_config(config: &mut web::ServiceConfig) {
     config.service(
@@ -33,55 +33,39 @@ fn get_token_storage() -> TokenStorage {
 }
 
 async fn get_currently_playing_track() -> impl Responder {
-    let track_data: Json<TrackData> = get_track_data().await;
+    let track_data: Result<Json<TrackData>, u16> = get_track_data().await;
 
-    if track_data.status_code.is_none() {
-        let track: &TrackItem = track_data.track.as_ref().unwrap();
-
-        return HttpResponse::Ok().json(Json(ShortTrackData {
-            is_active: track_data.is_active,
-            track: Some(TrackItem {
-                title: track.title.clone(),
-                release_date: track.release_date.clone(),
-                artist: track.artist.clone(),
-                image: track.image.clone(),
-                is_playing: track.is_playing.clone(),
-                explicit: track.explicit.clone(),
-                duration: track.duration.clone(),
-                progress: track.progress.clone()
+    match track_data {
+        Ok(track) => {
+            return HttpResponse::Ok().json(track)
+        },
+        Err(code) => {
+            if code == 401 {
+                refresh_spotify_token().await;
+                let refreshed_track_data: Result<Json<TrackData>, u16> = get_track_data().await;
                 
-            })
-        }))
-    } else if track_data.status_code == Some(401) {
-        refresh_spotify_token().await;
-        let refreshed_track_data: Json<TrackData> = get_track_data().await;
-        
-        if refreshed_track_data.status_code.is_none() {
-            return HttpResponse::Ok().json(refreshed_track_data)
-        } else {
-            return HttpResponse::Unauthorized().body("Check your credentials!")
+                match refreshed_track_data {
+                    Ok(track) => {
+                        return HttpResponse::Ok().json(track)
+                    },
+                    Err(_code) => {
+                        return HttpResponse::Unauthorized().body("Check your credentials!")
+                    }
+                }
+            } else if code == 204 {
+                return HttpResponse::Ok().json(Json(TrackData {
+                    is_active: false,
+                    track: None
+                }))
+            } else {
+                return HttpResponse::InternalServerError().body("Cannot get currently playing Spotify track.")
+            }
         }
-    } else if track_data.status_code == Some(204) {
-        return HttpResponse::Ok().json(Json(ShortTrackData {
-            is_active: track_data.is_active,
-            track: None
-        }))
-    } else {
-        return HttpResponse::InternalServerError().body("Cannot get currently playing Spotify track.")
     }
-}
-
-/* ## My track structs ## */
-
-#[derive(Serialize, Deserialize)]
-struct ShortTrackData {
-    is_active: bool,
-    track: Option<TrackItem>,
 }
 
 #[derive(Serialize, Deserialize)]
 struct TrackData {
-    status_code: Option<u16>,
     is_active: bool,
     track: Option<TrackItem>,
 }
@@ -97,8 +81,6 @@ struct TrackItem {
     duration: i64,
     progress: i64
 }
-
-/* ## API track structs ## */
 
 #[derive(Serialize, Deserialize)]
 struct ApiTrackData {
@@ -132,11 +114,10 @@ struct ApiTrackImage {
     url: String
 }
 
-async fn get_track_data() -> Json<TrackData> {
+async fn get_track_data() -> Result<Json<TrackData>, u16> {
     let storage: TokenStorage = get_token_storage();
-    
-    let client = get_reqwest_client();
-    let config = config();
+    let client: reqwest::Client = get_client();
+    let config = get_config();
 
     let url = format!(
         "{url}/me/player/currently-playing",
@@ -151,20 +132,19 @@ async fn get_track_data() -> Json<TrackData> {
         .await
         .unwrap();
 
-    let status_code = response.status();
+    let status_code = response.status().as_u16();
 
     let string_response = response
         .text()
         .await
         .unwrap();
 
-    if status_code.as_u16() == 200 {
+    if status_code == 200 {
         let response_object: Result<ApiTrackData, serde_json::Error> = serde_json::from_str(&string_response);
 
         match response_object {
             Ok(response) => {
-                return Json(TrackData {
-                    status_code: None,
+                return Ok(Json(TrackData {
                     is_active: true,
                     track: Some(TrackItem {
                         title: response.item.name,
@@ -177,29 +157,21 @@ async fn get_track_data() -> Json<TrackData> {
                         progress: response.progress_ms
                         
                     })
-                });
+                }));
             },
             Err(_error) => {
-                return Json(TrackData {
-                    status_code: Some(status_code.as_u16()),
-                    is_active: false,
-                    track: None
-                });
+                return Err(status_code)
             }
         }
     } else {
-        return Json(TrackData {
-            status_code: Some(status_code.as_u16()),
-            is_active: false,
-            track: None
-        });
+        return Err(status_code)
     }
 }
 
 async fn refresh_spotify_token() {
     let storage: TokenStorage = get_token_storage();
-    let client = get_reqwest_client();
-    let config = config();
+    let client = get_client();
+    let config = get_config();
 
     let url = format!(
         "{url}/token?refresh_token={refresh_token}&grant_type=refresh_token",
@@ -217,8 +189,8 @@ async fn refresh_spotify_token() {
         .post(url)
         .header(reqwest::header::ACCEPT_ENCODING, "gzip, deflate, br")
         .header(reqwest::header::CONTENT_TYPE, "application/x-www-form-urlencoded")
-        .header(reqwest::header::AUTHORIZATION, format!("Basic {}", encoded_credentials))
         .header(reqwest::header::CONTENT_LENGTH, 0)
+        .header(reqwest::header::AUTHORIZATION, format!("Basic {}", encoded_credentials))
         .send()
         .await
         .unwrap();
